@@ -1,0 +1,12 @@
+pasid
+=====
+list pulseaudio sink ids
+
+build
+=====
+in order to build pasid you will need pulseaudio headers
+$ make
+
+install
+=======
+$ sudo make install
