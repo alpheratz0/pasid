@@ -16,6 +16,8 @@
 */
 
 #include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
 #include <pulse/pulseaudio.h>
 
 #include "debug.h"
@@ -68,8 +70,38 @@ context_state_callback(pa_context *c, void *userdata) {
 	}
 }
 
+static bool
+match_opt(const char *in, const char *sh, const char *lo) {
+	return (strcmp(in, sh) == 0) ||
+		   (strcmp(in, lo) == 0);
+}
+
+static void
+usage(void) {
+	puts("Usage: pasid [ -hv ]");
+	puts("Options are:");
+	puts("     -h | --help                    display this message and exit");
+	puts("     -v | --version                 display the program version");
+	exit(0);
+}
+
+static void
+version(void) {
+	puts("pasid version "VERSION);
+	exit(0);
+}
+
 int
-main(void) {
+main(int argc, char **argv) {
+	/* skip program name */
+	--argc; ++argv;
+
+	if (argc > 0) {
+		if (match_opt(*argv, "-h", "--help")) usage();
+		else if (match_opt(*argv, "-v", "--version")) version();
+		else dief("invalid option %s", *argv);
+	}
+
 	int retval;
 	pa_mainloop_api *api;
 	pa_mainloop *m;
