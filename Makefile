@@ -27,11 +27,18 @@ install: all
 	@cp -f man/pasid.1 ${DESTDIR}${MANPREFIX}/man1
 	@chmod 644 ${DESTDIR}${MANPREFIX}/man1/pasid.1
 
+dist: clean
+	@mkdir -p pasid-${VERSION}
+	@cp -R LICENSE Makefile README man src pasid-${VERSION}
+	@tar -cf pasid-${VERSION}.tar pasid-${VERSION}
+	@gzip pasid-${VERSION}.tar
+	@rm -rf pasid-${VERSION}
+
 uninstall:
 	@rm -f ${DESTDIR}${PREFIX}/bin/pasid
 	@rm -f ${DESTDIR}${MANPREFIX}/man1/pasid.1
 
 clean:
-	@rm -f pasid ${OBJ}
+	@rm -f pasid pasid-${VERSION}.tar.gz ${OBJ}
 
 .PHONY: all clean install uninstall
