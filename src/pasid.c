@@ -18,14 +18,15 @@
 #include <stdio.h>
 #include <pulse/pulseaudio.h>
 
+#include "debug.h"
+
 static void
 get_sink_input_info_callback(pa_context *c, const pa_sink_input_info *i, int eol, void *userdata) {
 	pa_mainloop_api *api;
 	api = (pa_mainloop_api *)(userdata);
 
 	if (eol < 0) {
-		fprintf(stderr, "pasid: pa_context_get_sink_input_info_list failed: %s\n", pa_strerror(pa_context_errno(c)));
-		api->quit(api, 1);
+		dief("pa_context_get_sink_input_info_list failed: %s", pa_strerror(pa_context_errno(c)));
 		return;
 	}
 
@@ -62,8 +63,7 @@ context_state_callback(pa_context *c, void *userdata) {
 			break;
 		case PA_CONTEXT_FAILED:
 		default:
-			fprintf(stderr, "pasid: pa_context_connect failed: %s\n", pa_strerror(pa_context_errno(c)));
-			api->quit(api, 1);
+			dief("pa_context_connect failed: %s", pa_strerror(pa_context_errno(c)));
 			break;
 	}
 }
