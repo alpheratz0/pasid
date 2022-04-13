@@ -1,10 +1,10 @@
-VERSION = 0.1.2
+VERSION = 0.2.0
 PREFIX = /usr/local
 MANPREFIX = ${PREFIX}/share/man
 LDLIBS = -lpulse
 LDFLAGS = -s ${LDLIBS}
 INCS = -I/usr/include
-CFLAGS = -pedantic -Wall -Wextra -Os ${INCS} -DVERSION=\"${VERSION}\"
+CFLAGS = -pedantic -Wall -Wextra -Os ${INCS} -D_GNU_SOURCE -DVERSION=\"${VERSION}\"
 CC = cc
 
 SRC = src/debug.c \

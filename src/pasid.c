@@ -22,6 +22,8 @@
 
 #include "debug.h"
 
+static char *query = NULL;
+
 static void
 get_sink_input_info_callback(pa_context *c, const pa_sink_input_info *i, int eol, void *userdata) {
 	pa_mainloop_api *api;
@@ -37,8 +39,18 @@ get_sink_input_info_callback(pa_context *c, const pa_sink_input_info *i, int eol
 		return;
 	}
 
-	if (i) {
+	if (i == NULL) {
+		return;
+	}
+
+	if (query == NULL) {
 		printf("%d - %s\n", i->index, pa_proplist_gets(i->proplist, "application.name"));
+		return;
+	}
+
+	if (strcasestr(pa_proplist_gets(i->proplist, "application.name"), query) != NULL) {
+		printf("%d\n", i->index);
+		api->quit(api, 0);
 	}
 }
 
@@ -78,8 +90,9 @@ match_opt(const char *in, const char *sh, const char *lo) {
 
 static void
 usage(void) {
-	puts("Usage: pasid [ -hv ]");
+	puts("Usage: pasid [ -hv ] [ -m QUERY ]");
 	puts("Options are:");
+	puts("     -m | --match                   get the sink id of the application that matches the query");
 	puts("     -h | --help                    display this message and exit");
 	puts("     -v | --version                 display the program version");
 	exit(0);
@@ -99,6 +112,7 @@ main(int argc, char **argv) {
 	if (argc > 0) {
 		if (match_opt(*argv, "-h", "--help")) usage();
 		else if (match_opt(*argv, "-v", "--version")) version();
+		else if (match_opt(*argv, "-m", "--match") && --argc > 0) query = *++argv;
 		else dief("invalid option %s", *argv);
 	}
 
