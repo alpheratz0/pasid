@@ -23,6 +23,7 @@
 #include "debug.h"
 
 static char *query = NULL;
+static bool found = false;
 
 static void
 get_sink_input_info_callback(pa_context *c, const pa_sink_input_info *i, int eol, void *userdata) {
@@ -48,9 +49,9 @@ get_sink_input_info_callback(pa_context *c, const pa_sink_input_info *i, int eol
 		return;
 	}
 
-	if (strcasestr(pa_proplist_gets(i->proplist, "application.name"), query) != NULL) {
+	if (!found && strcasestr(pa_proplist_gets(i->proplist, "application.name"), query) != NULL) {
 		printf("%d\n", i->index);
-		api->quit(api, 0);
+		found = true;
 	}
 }
 
