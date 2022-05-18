@@ -1,17 +1,44 @@
 .TH PASID 1 "March 17, 2022"
 .SH NAME
-pasid \- list pulseaudio sink ids.
+pasid \- list & query pulseaudio sink ids.
 .SH SYNOPSIS
 \fBpasid\fP [ -hv ] [ -m QUERY ]
 .SH OPTIONS
-.TP
-\fB\-m\fR, \fB\-\-match\fR
-get the sink id of the application that matches the query
 .TP
 \fB\-h\fR, \fB\-\-help\fR
 show the help message and exit
 .TP
 \fB\-v\fR, \fB\-\-version\fR
 display the program version
+.TP
+\fB\-m\fR, \fB\-\-match\fR
+get the sink id of the application that matches the query
+.SH EXAMPLES
+.TP
+\fBincrease the volume of the librewolf application by 5 percent\fR
+pasid -m librewolf | xargs -I{} pactl set-sink-input-volume "{}" +5%
+.TP
+\fBtoggle mute of the librewolf application\fR
+pasid -m librewolf | xargs -I{} pactl set-sink-input-mute "{}" toggle
+.SH EXIT STATUS
+.TP
+\fB0\fR
+the program terminated succesfully
+.TP
+\fB1\fR
+an error occurred
+.TP
+\fB2\fR
+the specified query did not match any application
+.SH AUTHOR
+Written by alpheratz0.
+.SH COPYRIGHT
+Copyright \(co 2022 <alpheratz99@protonmail.com>
+.br
+License GPLv2.0: GNU GPL version 2.0 <https://gnu.org/licenses/gpl.html>.
+.br
+This is free software: you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.
 .SH BUGS
 https://github.com/alpheratz0/pasid/issues
