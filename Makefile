@@ -41,4 +41,4 @@ uninstall:
 clean:
 	@rm -f pasid pasid-${VERSION}.tar.gz ${OBJ}
 
-.PHONY: all clean install uninstall
+.PHONY: all clean install uninstall dist
