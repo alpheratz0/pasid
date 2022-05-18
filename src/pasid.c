@@ -114,10 +114,10 @@ main(int argc, char **argv) {
 		if (match_opt(*argv, "-h", "--help")) usage();
 		else if (match_opt(*argv, "-v", "--version")) version();
 		else if (match_opt(*argv, "-m", "--match") && --argc > 0) query = *++argv;
-		else dief("invalid option %s", *argv);
+		else if (**argv == '-') dief("invalid option %s", *argv);
+		else dief("unexpected argument: %s", *argv);
 	}
 
-	int retval;
 	pa_mainloop_api *api;
 	pa_mainloop *m;
 	pa_context *context;
@@ -128,10 +128,16 @@ main(int argc, char **argv) {
 
 	pa_context_set_state_callback(context, context_state_callback, (void *)(api));
 	pa_context_connect(context, NULL, 0, NULL);
-	pa_mainloop_run(m, &retval);
+
+	/* retval not used */
+	pa_mainloop_run(m, (int[1]) { 0 });
 
 	pa_context_unref(context);
 	pa_mainloop_free(m);
 
-	return retval;
+	if (NULL != query && !found) {
+		return 2;
+	}
+
+	return 0;
 }
