@@ -1,6 +1,6 @@
 pasid
 =====
-list pulseaudio sink ids
+list & query pulseaudio sink ids
 
 build
 =====
