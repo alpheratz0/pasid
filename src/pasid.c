@@ -41,11 +41,11 @@ get_sink_input_info_callback(pa_context *c, const pa_sink_input_info *i, int eol
 		return;
 	}
 
-	if (i == NULL) {
+	if (NULL == i) {
 		return;
 	}
 
-	if (query == NULL) {
+	if (NULL == query) {
 		printf("%d - %s\n", i->index, pa_proplist_gets(i->proplist, "application.name"));
 		return;
 	}
