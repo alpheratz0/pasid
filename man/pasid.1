@@ -18,6 +18,9 @@ get the sink id of the application that matches the query
 the same as above but case sensitive
 .SH EXAMPLES
 .TP
+\fBlist all input sinks\fR
+pasid
+.TP
 \fBincrease the volume of the librewolf application by 5 percent\fR
 pasid -m librewolf | xargs -I{} pactl set-sink-input-volume "{}" +5%
 .TP
