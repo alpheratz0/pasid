@@ -24,6 +24,7 @@
 
 static char *query = NULL;
 static bool found = false;
+static bool case_sensitive = false;
 
 static void
 get_sink_input_info_callback(pa_context *c, const pa_sink_input_info *i, int eol, void *userdata) {
@@ -49,9 +50,12 @@ get_sink_input_info_callback(pa_context *c, const pa_sink_input_info *i, int eol
 		return;
 	}
 
-	if (!found && strcasestr(pa_proplist_gets(i->proplist, "application.name"), query) != NULL) {
-		printf("%d\n", i->index);
-		found = true;
+	if (!found) {
+		if ((case_sensitive && NULL != strstr(pa_proplist_gets(i->proplist, "application.name"), query)) ||
+				(!case_sensitive && NULL != strcasestr(pa_proplist_gets(i->proplist, "application.name"), query))) {
+			printf("%d\n", i->index);
+			found = true;
+		}
 	}
 }
 
@@ -91,9 +95,10 @@ match_opt(const char *in, const char *sh, const char *lo) {
 
 static void
 usage(void) {
-	puts("Usage: pasid [ -hv ] [ -m QUERY ]");
+	puts("Usage: pasid [ -hv ] [ -mM QUERY ]");
 	puts("Options are:");
 	puts("     -m | --match                   get the sink id of the application that matches the query");
+	puts("     -M | --match-case-sensitive    the same as above but case sensitive");
 	puts("     -h | --help                    display this message and exit");
 	puts("     -v | --version                 display the program version");
 	exit(0);
@@ -114,6 +119,7 @@ main(int argc, char **argv) {
 		if (match_opt(*argv, "-h", "--help")) usage();
 		else if (match_opt(*argv, "-v", "--version")) version();
 		else if (match_opt(*argv, "-m", "--match") && --argc > 0) query = *++argv;
+		else if (match_opt(*argv, "-M", "--match-case-sensitive") && --argc > 0) { query = *++argv; case_sensitive = true; }
 		else if (**argv == '-') dief("invalid option %s", *argv);
 		else dief("unexpected argument: %s", *argv);
 	}
