@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 #include <pulse/pulseaudio.h>
 
 #include "debug.h"
@@ -25,6 +26,28 @@
 static char *query = NULL;
 static bool found = false;
 static bool case_sensitive = false;
+
+static bool
+match_substr(const char *src, const char *query, bool cs) {
+	size_t src_len, query_len;
+
+	src_len = strlen(src);
+	query_len = strlen(query);
+
+	if (query_len > src_len) {
+		return false;
+	}
+
+	for (size_t n = 0; n < (src_len - query_len + 1); ++n) {
+		for (size_t i = 0; i < query_len; ++i) {
+			if (!cs && tolower(src[n + i]) != tolower(query[i])) break;
+			if (cs && src[n + i] != query[i]) break;
+			if (i == query_len - 1) return true;
+		}
+	}
+
+	return false;
+}
 
 static void
 get_sink_input_info_callback(pa_context *c, const pa_sink_input_info *i, int eol, void *userdata) {
@@ -51,8 +74,7 @@ get_sink_input_info_callback(pa_context *c, const pa_sink_input_info *i, int eol
 	}
 
 	if (!found) {
-		if ((case_sensitive && NULL != strstr(pa_proplist_gets(i->proplist, "application.name"), query)) ||
-				(!case_sensitive && NULL != strcasestr(pa_proplist_gets(i->proplist, "application.name"), query))) {
+		if (match_substr(pa_proplist_gets(i->proplist, "application.name"), query, case_sensitive)) {
 			printf("%d\n", i->index);
 			found = true;
 		}
