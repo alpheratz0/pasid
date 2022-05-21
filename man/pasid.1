@@ -2,7 +2,7 @@
 .SH NAME
 pasid \- list & query pulseaudio sink ids.
 .SH SYNOPSIS
-\fBpasid\fP [ -hv ] [ -mM QUERY ]
+\fBpasid\fP [ -hv ] [ -m QUERY ]
 .SH OPTIONS
 .TP
 \fB\-h\fR, \fB\-\-help\fR
@@ -13,9 +13,6 @@ display the program version
 .TP
 \fB\-m\fR, \fB\-\-match\fR
 get the sink id of the application that matches the query
-.TP
-\fB\-M\fR, \fB\-\-match\-case\-sensitive\fR
-the same as above but case sensitive
 .SH EXAMPLES
 .TP
 \fBlist all input sinks\fR
@@ -28,7 +25,7 @@ pasid -m librewolf | xargs -I{} pactl set-sink-input-volume "{}" +5%
 pasid -m librewolf | xargs -I{} pactl set-sink-input-mute "{}" toggle
 .TP
 \fBmute google chrome\fR
-pasid -M 'Google Chrome' | xargs -I{} pactl set-sink-input-mute "{}" true
+pasid -m 'google chrome' | xargs -I{} pactl set-sink-input-mute "{}" true
 .SH EXIT STATUS
 .TP
 \fB0\fR
