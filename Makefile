@@ -1,4 +1,4 @@
-VERSION = 0.4.0-dev+${shell git rev-parse --short=16 HEAD}
+VERSION = 0.4.0-rev+${shell git rev-parse --short=16 HEAD}
 PREFIX = /usr/local
 MANPREFIX = ${PREFIX}/share/man
 LDLIBS = -lpulse
