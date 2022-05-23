@@ -24,8 +24,13 @@ pasid -m librewolf | xargs -I{} pactl set-sink-input-volume "{}" +5%
 \fBtoggle mute of the librewolf application\fR
 pasid -m librewolf | xargs -I{} pactl set-sink-input-mute "{}" toggle
 .TP
-\fBmute google chrome\fR
-pasid -m 'google chrome' | xargs -I{} pactl set-sink-input-mute "{}" true
+\fBmute librewolf\fR
+pasid -m librewolf | xargs -I{} pactl set-sink-input-mute "{}" true
+.TP
+\fBtoggle mute of all applications but librewolf\fR
+pasid | grep -v "^$(pasid -m librewolf) " | cut -d' ' -f1 | \\
+.br
+	xargs -I{} pactl set-sink-input-mute "{}" toggle
 .SH EXIT STATUS
 .TP
 \fB0\fR
