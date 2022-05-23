@@ -1,10 +1,10 @@
-VERSION = 0.4.0
+VERSION = 0.4.0-dev+${shell git rev-parse --short=16 HEAD}
 PREFIX = /usr/local
 MANPREFIX = ${PREFIX}/share/man
 LDLIBS = -lpulse
 LDFLAGS = -s ${LDLIBS}
 INCS = -I/usr/include
-CFLAGS = -pedantic -Wall -Wextra -Os ${INCS} -DVERSION=\"${VERSION}\"
+CFLAGS = -std=c99 -pedantic -Wall -Wextra -Os ${INCS} -DVERSION="\"${VERSION}\""
 CC = cc
 
 SRC = src/debug.c \
