@@ -5,7 +5,8 @@
 #include "debug.h"
 
 extern void
-dief(const char *err, ...) {
+dief(const char *err, ...)
+{
 	va_list list;
 	fputs("pasid: ", stderr);
 	va_start(list, err);

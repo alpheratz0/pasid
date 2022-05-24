@@ -54,7 +54,8 @@ static bool found = false;
 static pa_mainloop_api *api;
 
 static bool
-strcontains(const char *str, const char *x) {
+strcontains(const char *str, const char *x)
+{
 	int slen, xlen, attempts;
 
 	slen = (int)(strlen(str));
@@ -72,7 +73,8 @@ strcontains(const char *str, const char *x) {
 }
 
 static void
-get_sink_in_cb(pa_context *c, const pa_sink_input_info *i, int eol, UNUSED void *data) {
+get_sink_in_cb(pa_context *c, const pa_sink_input_info *i, int eol, UNUSED void *data)
+{
 	uint32_t 	 sink_id;
 	const char	*sink_appname;
 
@@ -100,7 +102,8 @@ get_sink_in_cb(pa_context *c, const pa_sink_input_info *i, int eol, UNUSED void 
 }
 
 static void
-context_ready_cb(pa_context *c) {
+context_ready_cb(pa_context *c)
+{
 	pa_operation_unref(
 		pa_context_get_sink_input_info_list(
 			c, get_sink_in_cb, NULL
@@ -109,7 +112,8 @@ context_ready_cb(pa_context *c) {
 }
 
 static void
-context_state_cb(pa_context *c, UNUSED void *data) {
+context_state_cb(pa_context *c, UNUSED void *data)
+{
 	switch (pa_context_get_state(c)) {
 		case PA_CONTEXT_CONNECTING:
 		case PA_CONTEXT_AUTHORIZING:
@@ -130,13 +134,15 @@ context_state_cb(pa_context *c, UNUSED void *data) {
 }
 
 static bool
-match_opt(const char *in, const char *sh, const char *lo) {
+match_opt(const char *in, const char *sh, const char *lo)
+{
 	return (strcmp(in, sh) == 0) ||
 		   (strcmp(in, lo) == 0);
 }
 
 static void
-usage(void) {
+usage(void)
+{
 	puts("Usage: pasid [ -hv ] [ -m QUERY ]");
 	puts("Options are:");
 	puts("     -m | --match                   get the sink id of the application that matches the query");
@@ -146,13 +152,15 @@ usage(void) {
 }
 
 static void
-version(void) {
+version(void)
+{
 	puts("pasid version "VERSION);
 	exit(0);
 }
 
 int
-main(int argc, char **argv) {
+main(int argc, char **argv)
+{
 	/* skip program name */
 	--argc; ++argv;
 
