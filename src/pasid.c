@@ -49,9 +49,9 @@
 
 #define UNUSED __attribute__((unused))
 
-#define PROPT(sh,lo,desc) do { \
-	printf("%7s | %-25s %s\n", sh, lo, desc); \
-} while (0);
+#define PRINTOPT(sh,lo,desc) do { \
+	printf("%7s | %-25s %s\n", (sh), (lo), (desc)); \
+} while (0)
 
 static char *query = NULL;
 static bool found = false;
@@ -150,13 +150,13 @@ usage(void)
 	puts("Usage: pasid [ -hv ] [ -m QUERY ]");
 	puts("Options are:");
 
-	PROPT(
+	PRINTOPT(
 		"-m", "--match",
 		"get the sink id of the application that matches the query"
 	);
 
-	PROPT("-h", "--help", "display this message and exit");
-	PROPT("-v", "--version", "display the program version");
+	PRINTOPT("-h", "--help", "display this message and exit");
+	PRINTOPT("-v", "--version", "display the program version");
 
 	exit(0);
 }
