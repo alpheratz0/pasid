@@ -84,8 +84,8 @@ strcontains(const char *str, const char *x)
 static void
 get_sink_in_cb(pa_context *c, const pa_sink_input_info *i, int eol, UNUSED void *data)
 {
-	uint32_t 	 sink_id;
-	const char	*sink_appname;
+	uint32_t     sink_id;
+	const char  *sink_appname;
 
 	if (eol < 0) {
 		dief("pa_context_get_sink_input_info_list failed: %s",
@@ -155,11 +155,8 @@ usage(void)
 	puts("Usage: pasid [ -hv ] [ -m QUERY ]");
 	puts("Options are:");
 
-	PRINTOPT(
-		"-m", "--match",
-		"get the sink id of the application that matches the query"
-	);
-
+	PRINTOPT( "-m", "--match",
+		"get the sink id of the application that matches the query");
 	PRINTOPT("-h", "--help", "display this message and exit");
 	PRINTOPT("-v", "--version", "display the program version");
 
