@@ -54,10 +54,6 @@
 
 #define UNUSED __attribute__((unused))
 
-#define PRINTOPT(sh,lo,desc) do { \
-	printf("%7s | %-25s %s\n", (sh), (lo), (desc)); \
-} while (0)
-
 static char *query = NULL;
 static bool found = false;
 static pa_mainloop_api *api;
@@ -142,6 +138,12 @@ context_state_cb(pa_context *c, UNUSED void *data)
 	}
 }
 
+static inline void
+print_opt(const char *sh, const char *lo, const char *desc)
+{
+	printf("%7s | %-25s %s\n", sh, lo, desc);
+}
+
 static bool
 match_opt(const char *in, const char *sh, const char *lo)
 {
@@ -154,12 +156,9 @@ usage(void)
 {
 	puts("Usage: pasid [ -hv ] [ -m QUERY ]");
 	puts("Options are:");
-
-	PRINTOPT( "-m", "--match",
-		"get the sink id of the application that matches the query");
-	PRINTOPT("-h", "--help", "display this message and exit");
-	PRINTOPT("-v", "--version", "display the program version");
-
+	print_opt("-m", "--match", "get sink id by application name");
+	print_opt("-h", "--help", "display this message and exit");
+	print_opt("-v", "--version", "display the program version");
 	exit(0);
 }
 
