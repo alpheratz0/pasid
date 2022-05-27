@@ -97,12 +97,12 @@ get_sink_in_cb(pa_context *c, const pa_sink_input_info *i, int eol, UNUSED void 
 	sink_appname = pa_proplist_gets(i->proplist, PA_PROP_APPLICATION_NAME);
 
 	if (NULL == query) {
-		printf("%d - %s\n", sink_id, sink_appname);
+		printf("%u - %s\n", sink_id, sink_appname);
 		return;
 	}
 
 	if (!found && (found = strcontains(sink_appname, query))) {
-		printf("%d\n", sink_id);
+		printf("%u\n", sink_id);
 	}
 }
 
