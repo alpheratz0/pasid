@@ -109,11 +109,16 @@ get_sink_in_cb(pa_context *c, const pa_sink_input_info *i, int eol, UNUSED void 
 static void
 context_ready_cb(pa_context *c)
 {
-	pa_operation_unref(
-		pa_context_get_sink_input_info_list(
-			c, get_sink_in_cb, NULL
-		)
-	);
+	pa_operation *po;
+
+	po = pa_context_get_sink_input_info_list(c, get_sink_in_cb, NULL);
+
+	if (NULL == po) {
+		dief("pa_context_get_sink_input_info_list failed: %s",
+				pa_strerror(pa_context_errno(c)));
+	}
+
+	pa_operation_unref(po);
 }
 
 static void
@@ -186,15 +191,26 @@ main(int argc, char **argv)
 	pa_mainloop *m;
 	pa_context *context;
 
-	m = pa_mainloop_new();
+	if (NULL == (m = pa_mainloop_new())) {
+		die("pa_mainloop_new failed");
+	}
+
 	api = pa_mainloop_get_api(m);
-	context = pa_context_new(api, NULL);
+
+	if (NULL == (context = pa_context_new(api, NULL))) {
+		die("pa_context_new failed");
+	}
 
 	pa_context_set_state_callback(context, context_state_cb, NULL);
-	pa_context_connect(context, NULL, 0, NULL);
 
-	/* retval not used */
-	pa_mainloop_run(m, (int[1]) { 0 });
+	if (pa_context_connect(context, NULL, 0, NULL) < 0) {
+		dief("pa_context_connect failed: %s",
+				pa_strerror(pa_context_errno(context)));
+	}
+
+	if (pa_mainloop_run(m, (int[1]) { 0 }) < 0) {
+		die("pa_mainloop_run failed");
+	}
 
 	pa_context_unref(context);
 	pa_mainloop_free(m);

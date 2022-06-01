@@ -5,6 +5,13 @@
 #include "debug.h"
 
 extern void
+die(const char *err)
+{
+	fprintf(stderr, "pasid: %s\n", err);
+	exit(1);
+}
+
+extern void
 dief(const char *err, ...)
 {
 	va_list list;
