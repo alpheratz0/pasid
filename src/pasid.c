@@ -208,7 +208,7 @@ main(int argc, char **argv)
 				pa_strerror(pa_context_errno(context)));
 	}
 
-	if (pa_mainloop_run(m, (int[1]) { 0 }) < 0) {
+	if (pa_mainloop_run(m, NULL) < 0) {
 		die("pa_mainloop_run failed");
 	}
 
