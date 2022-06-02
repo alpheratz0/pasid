@@ -14,7 +14,8 @@ OBJ = ${SRC:.c=.o}
 
 all: pasid
 
-${OBJ}:	src/debug.h
+${OBJ}:	src/debug.h \
+		src/exit_status.h
 
 pasid: ${OBJ}
 	@${CC} -o $@ ${OBJ} ${LDFLAGS}

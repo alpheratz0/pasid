@@ -51,6 +51,7 @@
 #include <pulse/pulseaudio.h>
 
 #include "debug.h"
+#include "exit_status.h"
 
 #define UNUSED __attribute__((unused))
 
@@ -164,14 +165,14 @@ usage(void)
 	print_opt("-m", "--match", "get sink id by application name");
 	print_opt("-h", "--help", "display this message and exit");
 	print_opt("-v", "--version", "display the program version");
-	exit(0);
+	exit(PASID_EXIT_SUCCESS);
 }
 
 static void
 version(void)
 {
 	puts("pasid version "VERSION);
-	exit(0);
+	exit(PASID_EXIT_SUCCESS);
 }
 
 int
@@ -216,8 +217,8 @@ main(int argc, char **argv)
 	pa_mainloop_free(m);
 
 	if (NULL != query && !found) {
-		return 2;
+		return PASID_EXIT_NO_MATCH;
 	}
 
-	return 0;
+	return PASID_EXIT_SUCCESS;
 }
