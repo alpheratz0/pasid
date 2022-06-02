@@ -178,7 +178,9 @@ version(void)
 int
 main(int argc, char **argv)
 {
-	/* skip program name */
+	pa_mainloop *m;
+	pa_context *context;
+
 	--argc; ++argv;
 
 	if (argc > 0) {
@@ -188,9 +190,6 @@ main(int argc, char **argv)
 		else if (**argv == '-') dief("invalid option %s", *argv);
 		else dief("unexpected argument: %s", *argv);
 	}
-
-	pa_mainloop *m;
-	pa_context *context;
 
 	if (NULL == (m = pa_mainloop_new())) {
 		die("pa_mainloop_new failed");
