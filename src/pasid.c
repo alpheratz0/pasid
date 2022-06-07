@@ -181,9 +181,7 @@ main(int argc, char **argv)
 	pa_mainloop *m;
 	pa_context *context;
 
-	--argc; ++argv;
-
-	if (argc > 0) {
+	if (++argv, --argc > 0) {
 		if (match_opt(*argv, "-h", "--help")) usage();
 		else if (match_opt(*argv, "-v", "--version")) version();
 		else if (match_opt(*argv, "-m", "--match") && --argc > 0) query = *++argv;
