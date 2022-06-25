@@ -79,7 +79,10 @@ strcontains(const char *str, const char *x)
 }
 
 static void
-get_sink_in_cb(pa_context *c, const pa_sink_input_info *i, int eol, UNUSED void *data)
+get_sink_in_cb(pa_context *c,
+               const pa_sink_input_info *i,
+               int eol,
+               UNUSED void *data)
 {
 	uint32_t     sink_id;
 	const char  *sink_appname;
@@ -150,11 +153,10 @@ print_opt(const char *sh, const char *lo, const char *desc)
 	printf("%7s | %-25s %s\n", sh, lo, desc);
 }
 
-static bool
+static int
 match_opt(const char *in, const char *sh, const char *lo)
 {
-	return (strcmp(in, sh) == 0) ||
-		   (strcmp(in, lo) == 0);
+	return (strcmp(in, sh) == 0) || (strcmp(in, lo) == 0);
 }
 
 static void
