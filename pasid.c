@@ -45,7 +45,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 #include <ctype.h>
@@ -58,7 +57,7 @@
 #define PASID_EXIT_NO_MATCH     (2)
 
 static char *query = NULL;
-static bool found = false;
+static int found = 0;
 static pa_mainloop_api *api;
 
 static void
@@ -80,7 +79,7 @@ dief(const char *err, ...)
 	exit(PASID_EXIT_FAILURE);
 }
 
-static bool
+static int
 strcontains(const char *str, const char *x)
 {
 	int slen, xlen, attempts;
@@ -92,11 +91,11 @@ strcontains(const char *str, const char *x)
 	while (attempts-- > 0) {
 		for (int i = 0; i < xlen; ++i) {
 			if (tolower(str[attempts + i]) != tolower(x[i])) break;
-			if (i == xlen - 1) return true;
+			if (i == xlen - 1) return 1;
 		}
 	}
 
-	return false;
+	return 0;
 }
 
 static void
