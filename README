@@ -1,12 +1,15 @@
-pasid
-=====
-list & query pulseaudio sink ids
+]|~ pasid ~|[
 
-build
-=====
-in order to build pasid you will need pulseaudio headers
+List and query pulseaudio sinks id.
+
+]|~ build ~|[
+
+In order to build pasid you will need pulseaudio headers.
 $ make
 
-install
-=======
-# make install
+]|~ license ~|[
+
+This program is free software; you can redistribute it
+and/or modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+See LICENSE for more details.
