@@ -44,20 +44,41 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 #include <ctype.h>
 #include <pulse/pulseaudio.h>
 
-#include "debug.h"
-#include "exit_status.h"
-
 #define UNUSED __attribute__((unused))
+
+#define PASID_EXIT_SUCCESS      (0)
+#define PASID_EXIT_FAILURE      (1)
+#define PASID_EXIT_NO_MATCH     (2)
 
 static char *query = NULL;
 static bool found = false;
 static pa_mainloop_api *api;
+
+static void
+die(const char *err)
+{
+	fprintf(stderr, "pasid: %s\n", err);
+	exit(PASID_EXIT_FAILURE);
+}
+
+static void
+dief(const char *err, ...)
+{
+	va_list list;
+	fputs("pasid: ", stderr);
+	va_start(list, err);
+	vfprintf(stderr, err, list);
+	va_end(list);
+	fputc('\n', stderr);
+	exit(PASID_EXIT_FAILURE);
+}
 
 static bool
 strcontains(const char *str, const char *x)
