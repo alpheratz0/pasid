@@ -1,11 +1,12 @@
-VERSION = 1.0.1-rev+${shell git rev-parse --short=16 HEAD}
+VERSION = 0.1.0
+
+CC      = cc
+CFLAGS  = -std=c99 -pedantic -Wall -Wextra -Os -DVERSION="\"${VERSION}\""
+LDLIBS  = -lpulse
+LDFLAGS = -s ${LDLIBS}
+
 PREFIX = /usr/local
 MANPREFIX = ${PREFIX}/share/man
-LDLIBS = -lpulse
-LDFLAGS = -s ${LDLIBS}
-INCS = -I/usr/include
-CFLAGS = -std=c99 -pedantic -Wall -Wextra -Os ${INCS} -DVERSION="\"${VERSION}\""
-CC = cc
 
 all: pasid
 
