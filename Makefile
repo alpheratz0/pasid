@@ -21,12 +21,12 @@ install: all
 	cp -f pasid ${DESTDIR}${PREFIX}/bin
 	chmod 755 ${DESTDIR}${PREFIX}/bin/pasid
 	mkdir -p ${DESTDIR}${MANPREFIX}/man1
-	cp -f man/pasid.1 ${DESTDIR}${MANPREFIX}/man1
+	cp -f pasid.1 ${DESTDIR}${MANPREFIX}/man1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/pasid.1
 
 dist: clean
 	mkdir -p pasid-${VERSION}
-	cp -R LICENSE Makefile README man src pasid-${VERSION}
+	cp -R LICENSE Makefile README pasid.1 pasid.c pasid-${VERSION}
 	tar -cf pasid-${VERSION}.tar pasid-${VERSION}
 	gzip pasid-${VERSION}.tar
 	rm -rf pasid-${VERSION}
