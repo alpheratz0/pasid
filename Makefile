@@ -7,18 +7,13 @@ INCS = -I/usr/include
 CFLAGS = -std=c99 -pedantic -Wall -Wextra -Os ${INCS} -DVERSION="\"${VERSION}\""
 CC = cc
 
-SRC = src/debug.c \
-	  src/pasid.c
-
-OBJ = ${SRC:.c=.o}
-
 all: pasid
 
-${OBJ}:	src/debug.h \
-		src/exit_status.h
+.c.o:
+	${CC} -c $< ${CFLAGS}
 
-pasid: ${OBJ}
-	${CC} -o $@ ${OBJ} ${LDFLAGS}
+pasid: pasid.o
+	${CC} -o $@ $< ${LDFLAGS}
 
 install: all
 	mkdir -p ${DESTDIR}${PREFIX}/bin
@@ -40,6 +35,6 @@ uninstall:
 	rm -f ${DESTDIR}${MANPREFIX}/man1/pasid.1
 
 clean:
-	rm -f pasid pasid-${VERSION}.tar.gz ${OBJ}
+	rm -f pasid pasid.o pasid-${VERSION}.tar.gz
 
 .PHONY: all clean install uninstall dist
