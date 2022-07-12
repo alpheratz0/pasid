@@ -84,14 +84,14 @@ dief(const char *err, ...)
 static int
 strcontains(const char *str, const char *x)
 {
-	int slen, xlen, attempts;
+	int i, slen, xlen, attempts;
 
 	slen = (int)(strlen(str));
 	xlen = (int)(strlen(x));
 	attempts = slen - xlen + 1;
 
 	while (attempts-- > 0) {
-		for (int i = 0; i < xlen; ++i) {
+		for (i = 0; i < xlen; ++i) {
 			if (tolower(str[attempts + i]) != tolower(x[i])) break;
 			if (i == xlen - 1) return 1;
 		}
