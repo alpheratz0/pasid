@@ -161,7 +161,6 @@ context_state_cb(pa_context *c, UNUSED void *data)
 		case PA_CONTEXT_TERMINATED:
 			api->quit(api, 0);
 			break;
-		case PA_CONTEXT_FAILED:
 		default:
 			dief("pa_context_connect failed: %s",
 					pa_strerror(pa_context_errno(c)));
