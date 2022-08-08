@@ -26,14 +26,6 @@ get the sink id of the application that matches the query
 pasid
 .It increase the volume of the librewolf application by 5 percent
 pasid -m librewolf | xargs -I{} pactl set-sink-input-volume "{}" +5%
-.It toggle mute of the librewolf application
-pasid -m librewolf | xargs -I{} pactl set-sink-input-mute "{}" toggle
-.It mute librewolf
-pasid -m librewolf | xargs -I{} pactl set-sink-input-mute "{}" true
-.It toggle mute of all applications but librewolf
-pasid | grep -v "^$(pasid -m librewolf) " | cut -d' ' -f1 | \\
-.br
-	xargs -I{} pactl set-sink-input-mute "{}" toggle
 .El
 .Sh EXIT STATUS
 .Bl -tag -width indent
