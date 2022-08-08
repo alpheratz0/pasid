@@ -53,12 +53,12 @@
 #define UNUSED __attribute__((unused))
 
 enum {
-	PASID_EXIT_SUCCESS  = 0,
-	PASID_EXIT_FAILURE  = 1,
+	PASID_EXIT_SUCCESS = 0,
+	PASID_EXIT_FAILURE = 1,
 	PASID_EXIT_NO_MATCH = 2
 };
 
-static char *query = NULL;
+static const char *query = NULL;
 static int found = 0;
 static pa_mainloop_api *api;
 
@@ -70,15 +70,26 @@ die(const char *err)
 }
 
 static void
-dief(const char *err, ...)
+dief(const char *fmt, ...)
 {
-	va_list list;
+	va_list args;
+
 	fputs("pasid: ", stderr);
-	va_start(list, err);
-	vfprintf(stderr, err, list);
-	va_end(list);
+	va_start(args, fmt);
+	vfprintf(stderr, fmt, args);
+	va_end(args);
 	fputc('\n', stderr);
 	exit(PASID_EXIT_FAILURE);
+}
+
+static const char *
+enotnull(const char *str, const char *name)
+{
+	if (NULL == str) {
+		dief("%s cannot be null", name);
+	}
+
+	return str;
 }
 
 static int
@@ -174,20 +185,10 @@ print_opt(const char *sh, const char *lo, const char *desc)
 	printf("%7s | %-25s %s\n", sh, lo, desc);
 }
 
-static int
-match_opt(const char *in, const char *sh, const char *lo)
-{
-	return (strcmp(in, sh) == 0) || (strcmp(in, lo) == 0);
-}
-
 static void
 usage(void)
 {
-	puts("Usage: pasid [ -hv ] [ -m QUERY ]");
-	puts("Options are:");
-	print_opt("-m", "--match", "get sink id by application name");
-	print_opt("-h", "--help", "display this message and exit");
-	print_opt("-v", "--version", "display the program version");
+	puts("usage: pasid [-hv] [-m query]");
 	exit(PASID_EXIT_SUCCESS);
 }
 
@@ -205,9 +206,9 @@ main(int argc, char **argv)
 	pa_context *context;
 
 	if (++argv, --argc > 0) {
-		if (match_opt(*argv, "-h", "--help")) usage();
-		else if (match_opt(*argv, "-v", "--version")) version();
-		else if (match_opt(*argv, "-m", "--match") && --argc > 0) query = *++argv;
+		if (!strcmp(*argv, "-h")) usage();
+		else if (!strcmp(*argv, "-v")) version();
+		else if (!strcmp(*argv, "-m")) --argc, query = enotnull(*++argv, "query");
 		else if (**argv == '-') dief("invalid option %s", *argv);
 		else dief("unexpected argument: %s", *argv);
 	}
