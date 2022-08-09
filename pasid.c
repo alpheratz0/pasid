@@ -179,12 +179,6 @@ context_state_cb(pa_context *c, UNUSED void *data)
 	}
 }
 
-static inline void
-print_opt(const char *sh, const char *lo, const char *desc)
-{
-	printf("%7s | %-25s %s\n", sh, lo, desc);
-}
-
 static void
 usage(void)
 {
