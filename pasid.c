@@ -46,6 +46,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
 #include <pulse/pulseaudio.h>
@@ -59,7 +60,7 @@ enum {
 };
 
 static const char *query = NULL;
-static int found = 0;
+static bool found = false;
 static pa_mainloop_api *api;
 
 static void
@@ -92,8 +93,8 @@ enotnull(const char *str, const char *name)
 	return str;
 }
 
-static int
-strcontains(const char *str, const char *x)
+static bool
+str_contains(const char *str, const char *x)
 {
 	int i, slen, xlen, attempts;
 
@@ -104,18 +105,16 @@ strcontains(const char *str, const char *x)
 	while (attempts-- > 0) {
 		for (i = 0; i < xlen; ++i) {
 			if (tolower(str[attempts + i]) != tolower(x[i])) break;
-			if (i == xlen - 1) return 1;
+			if (i == xlen - 1) return true;
 		}
 	}
 
-	return 0;
+	return false;
 }
 
 static void
-get_sink_in_cb(pa_context *c,
-               const pa_sink_input_info *i,
-               int eol,
-               UNUSED void *data)
+get_sink_in_cb(pa_context *c, const pa_sink_input_info *i,
+               int eol, UNUSED void *data)
 {
 	uint32_t     sink_id;
 	const char  *sink_appname;
@@ -138,7 +137,7 @@ get_sink_in_cb(pa_context *c,
 		return;
 	}
 
-	if (!found && (found = strcontains(sink_appname, query))) {
+	if (!found && (found = str_contains(sink_appname, query))) {
 		printf("%u\n", sink_id);
 	}
 }
