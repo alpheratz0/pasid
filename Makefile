@@ -1,15 +1,7 @@
 .POSIX:
 .PHONY: all clean install uninstall dist
 
-VERSION = 0.1.0
-
-CC      = cc
-CFLAGS  = -std=c99 -pedantic -Wall -Wextra -Os -DVERSION=\"$(VERSION)\"
-LDLIBS  = -lpulse
-LDFLAGS = -s
-
-PREFIX    = /usr/local
-MANPREFIX = $(PREFIX)/share/man
+include config.mk
 
 all: pasid
 
@@ -29,7 +21,7 @@ install: all
 
 dist: clean
 	mkdir -p pasid-$(VERSION)
-	cp -R COPYING Makefile README pasid.1 pasid.c pasid-$(VERSION)
+	cp -R COPYING config.mk Makefile README pasid.1 pasid.c pasid-$(VERSION)
 	tar -cf pasid-$(VERSION).tar pasid-$(VERSION)
 	gzip pasid-$(VERSION).tar
 	rm -rf pasid-$(VERSION)
