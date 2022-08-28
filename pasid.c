@@ -86,10 +86,8 @@ dief(const char *fmt, ...)
 static const char *
 enotnull(const char *str, const char *name)
 {
-	if (NULL == str) {
+	if (NULL == str)
 		dief("%s cannot be null", name);
-	}
-
 	return str;
 }
 
@@ -119,10 +117,9 @@ get_sink_in_cb(pa_context *c, const pa_sink_input_info *i,
 	uint32_t     sink_id;
 	const char  *sink_appname;
 
-	if (eol < 0) {
+	if (eol < 0)
 		dief("pa_context_get_sink_input_info_list failed: %s",
 				pa_strerror(pa_context_errno(c)));
-	}
 
 	if (eol > 0 || NULL == i) {
 		api->quit(api, 0);
@@ -137,9 +134,8 @@ get_sink_in_cb(pa_context *c, const pa_sink_input_info *i,
 		return;
 	}
 
-	if (!found && (found = str_contains(sink_appname, query))) {
+	if (!found && (found = str_contains(sink_appname, query)))
 		printf("%u\n", sink_id);
-	}
 }
 
 static void
@@ -149,10 +145,9 @@ context_ready_cb(pa_context *c)
 
 	po = pa_context_get_sink_input_info_list(c, get_sink_in_cb, NULL);
 
-	if (NULL == po) {
+	if (NULL == po)
 		dief("pa_context_get_sink_input_info_list failed: %s",
 				pa_strerror(pa_context_errno(c)));
-	}
 
 	pa_operation_unref(po);
 }
@@ -206,33 +201,28 @@ main(int argc, char **argv)
 		else dief("unexpected argument: %s", *argv);
 	}
 
-	if (NULL == (m = pa_mainloop_new())) {
+	if (NULL == (m = pa_mainloop_new()))
 		die("pa_mainloop_new failed");
-	}
 
 	api = pa_mainloop_get_api(m);
 
-	if (NULL == (context = pa_context_new(api, NULL))) {
+	if (NULL == (context = pa_context_new(api, NULL)))
 		die("pa_context_new failed");
-	}
 
 	pa_context_set_state_callback(context, context_state_cb, NULL);
 
-	if (pa_context_connect(context, NULL, 0, NULL) < 0) {
+	if (pa_context_connect(context, NULL, 0, NULL) < 0)
 		dief("pa_context_connect failed: %s",
 				pa_strerror(pa_context_errno(context)));
-	}
 
-	if (pa_mainloop_run(m, NULL) < 0) {
+	if (pa_mainloop_run(m, NULL) < 0)
 		die("pa_mainloop_run failed");
-	}
 
 	pa_context_unref(context);
 	pa_mainloop_free(m);
 
-	if (NULL != query && !found) {
+	if (NULL != query && !found)
 		return PASID_EXIT_NO_MATCH;
-	}
 
 	return PASID_EXIT_SUCCESS;
 }
