@@ -64,14 +64,7 @@ static bool found = false;
 static pa_mainloop_api *api;
 
 static void
-die(const char *err)
-{
-	fprintf(stderr, "pasid: %s\n", err);
-	exit(PASID_EXIT_FAILURE);
-}
-
-static void
-dief(const char *fmt, ...)
+die(const char *fmt, ...)
 {
 	va_list args;
 
@@ -87,7 +80,7 @@ static const char *
 enotnull(const char *str, const char *name)
 {
 	if (NULL == str)
-		dief("%s cannot be null", name);
+		die("%s cannot be null", name);
 	return str;
 }
 
@@ -118,7 +111,7 @@ get_sink_in_cb(pa_context *c, const pa_sink_input_info *i,
 	const char  *sink_appname;
 
 	if (eol < 0)
-		dief("pa_context_get_sink_input_info_list failed: %s",
+		die("pa_context_get_sink_input_info_list failed: %s",
 				pa_strerror(pa_context_errno(c)));
 
 	if (eol > 0 || NULL == i) {
@@ -146,7 +139,7 @@ context_ready_cb(pa_context *c)
 	po = pa_context_get_sink_input_info_list(c, get_sink_in_cb, NULL);
 
 	if (NULL == po)
-		dief("pa_context_get_sink_input_info_list failed: %s",
+		die("pa_context_get_sink_input_info_list failed: %s",
 				pa_strerror(pa_context_errno(c)));
 
 	pa_operation_unref(po);
@@ -167,7 +160,7 @@ context_state_cb(pa_context *c, UNUSED void *data)
 			api->quit(api, 0);
 			break;
 		default:
-			dief("pa_context_connect failed: %s",
+			die("pa_context_connect failed: %s",
 					pa_strerror(pa_context_errno(c)));
 			break;
 	}
@@ -193,12 +186,17 @@ main(int argc, char **argv)
 	pa_mainloop *m;
 	pa_context *context;
 
-	if (++argv, --argc > 0) {
-		if (!strcmp(*argv, "-h")) usage();
-		else if (!strcmp(*argv, "-v")) version();
-		else if (!strcmp(*argv, "-m")) --argc, query = enotnull(*++argv, "query");
-		else if (**argv == '-') dief("invalid option %s", *argv);
-		else dief("unexpected argument: %s", *argv);
+	while (++argv, --argc > 0) {
+		if ((*argv)[0] == '-' && (*argv)[1] != '\0' && (*argv)[2] == '\0') {
+			switch ((*argv)[1]) {
+				case 'h': usage(); break;
+				case 'v': version(); break;
+				case 'm': --argc; query = enotnull(*++argv, "query"); break;
+				default: die("invalid option %s", *argv); break;
+			}
+		} else {
+			die("unexpected argument: %s", *argv);
+		}
 	}
 
 	if (NULL == (m = pa_mainloop_new()))
@@ -212,7 +210,7 @@ main(int argc, char **argv)
 	pa_context_set_state_callback(context, context_state_cb, NULL);
 
 	if (pa_context_connect(context, NULL, 0, NULL) < 0)
-		dief("pa_context_connect failed: %s",
+		die("pa_context_connect failed: %s",
 				pa_strerror(pa_context_errno(context)));
 
 	if (pa_mainloop_run(m, NULL) < 0)
