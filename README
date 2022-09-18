@@ -1,13 +1,8 @@
-]|~ pasid ~|[
+pasid lets you list and query pulseaudio sinks id.
+For more information about it's usage check `man pasid`.
 
-List and query pulseaudio sinks id.
-
-]|~ build ~|[
-
-In order to build pasid you will need pulseaudio headers.
-$ make
-
-]|~ license ~|[
+This program requires libpulse to be installed.
+In order to build this program you need to run `make`.
 
 This program is free software; you can redistribute it
 and/or modify it under the terms of the GNU General Public License
