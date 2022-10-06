@@ -59,8 +59,8 @@ enum {
 	PASID_EXIT_NO_MATCH = 2
 };
 
-static const char *query = NULL;
-static bool found = false;
+static const char *query;
+static bool found;
 static pa_mainloop_api *api;
 
 static void
