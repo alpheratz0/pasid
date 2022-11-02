@@ -169,7 +169,7 @@ context_state_cb(pa_context *c, UNUSED void *data)
 static void
 usage(void)
 {
-	puts("usage: pasid [-hv] [-m query]");
+	puts("usage: pasid [-hv] [-q query]");
 	exit(PASID_EXIT_SUCCESS);
 }
 
@@ -191,7 +191,7 @@ main(int argc, char **argv)
 			switch ((*argv)[1]) {
 				case 'h': usage(); break;
 				case 'v': version(); break;
-				case 'm': --argc; query = enotnull(*++argv, "query"); break;
+				case 'q': --argc; query = enotnull(*++argv, "query"); break;
 				default: die("invalid option %s", *argv); break;
 			}
 		} else {
