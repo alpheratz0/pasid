@@ -1,4 +1,4 @@
-.Dd August 8, 2022
+.Dd November 2, 2022
 .Dt PASID 1
 .Sh NAME
 .Nm pasid
@@ -6,7 +6,7 @@
 .Sh SYNOPSIS
 .Nm
 .Op Fl hv
-.Op Fl m Ar query
+.Op Fl q Ar query
 .Sh DESCRIPTION
 The
 .Nm
@@ -17,7 +17,7 @@ utility lets you list and query pulseaudio sink ids.
 show usage
 .It Fl v
 display the program version
-.It Fl m
+.It Fl q
 get the sink id of the application that matches the query
 .El
 .Sh EXAMPLES
@@ -25,7 +25,7 @@ get the sink id of the application that matches the query
 .It list all input sinks
 pasid
 .It increase the volume of the librewolf application by 5 percent
-pasid -m librewolf | xargs -I{} pactl set-sink-input-volume "{}" +5%
+pasid -q librewolf | xargs -I{} pactl set-sink-input-volume "{}" +5%
 .El
 .Sh EXIT STATUS
 .Bl -tag -width indent
