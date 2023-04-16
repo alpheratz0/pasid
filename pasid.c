@@ -149,20 +149,20 @@ static void
 context_state_cb(pa_context *c, UNUSED void *data)
 {
 	switch (pa_context_get_state(c)) {
-		case PA_CONTEXT_CONNECTING:
-		case PA_CONTEXT_AUTHORIZING:
-		case PA_CONTEXT_SETTING_NAME:
-			break;
-		case PA_CONTEXT_READY:
-			context_ready_cb(c);
-			break;
-		case PA_CONTEXT_TERMINATED:
-			api->quit(api, 0);
-			break;
-		default:
-			die("pa_context_connect failed: %s",
-					pa_strerror(pa_context_errno(c)));
-			break;
+	case PA_CONTEXT_CONNECTING:
+	case PA_CONTEXT_AUTHORIZING:
+	case PA_CONTEXT_SETTING_NAME:
+		break;
+	case PA_CONTEXT_READY:
+		context_ready_cb(c);
+		break;
+	case PA_CONTEXT_TERMINATED:
+		api->quit(api, 0);
+		break;
+	default:
+		die("pa_context_connect failed: %s",
+				pa_strerror(pa_context_errno(c)));
+		break;
 	}
 }
 
@@ -189,10 +189,10 @@ main(int argc, char **argv)
 	while (++argv, --argc > 0) {
 		if ((*argv)[0] == '-' && (*argv)[1] != '\0' && (*argv)[2] == '\0') {
 			switch ((*argv)[1]) {
-				case 'h': usage(); break;
-				case 'v': version(); break;
-				case 'q': --argc; query = enotnull(*++argv, "query"); break;
-				default: die("invalid option %s", *argv); break;
+			case 'h': usage(); break;
+			case 'v': version(); break;
+			case 'q': --argc; query = enotnull(*++argv, "query"); break;
+			default: die("invalid option %s", *argv); break;
 			}
 		} else {
 			die("unexpected argument: %s", *argv);
