@@ -21,7 +21,8 @@ install: all
 
 dist: clean
 	mkdir -p pasid-$(VERSION)
-	cp -R COPYING config.mk Makefile README pasid.1 pasid.c pasid-$(VERSION)
+	cp -R COPYING config.mk Makefile README pasid.1 \
+		pasid.c pasid-$(VERSION)
 	tar -cf pasid-$(VERSION).tar pasid-$(VERSION)
 	gzip pasid-$(VERSION).tar
 	rm -rf pasid-$(VERSION)
