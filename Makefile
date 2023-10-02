@@ -6,7 +6,7 @@ include config.mk
 all: pasid
 
 pasid: pasid.o
-	$(CC) $(LDFLAGS) -o pasid pasid.o $(LDLIBS)
+	$(CC) $(LDFLAGS) -o pasid pasid.o
 
 clean:
 	rm -f pasid pasid.o pasid-$(VERSION).tar.gz
